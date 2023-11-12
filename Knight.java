@@ -32,16 +32,7 @@ public final class Knight extends Piece {
         }
 
         if(newCol > 0 && newCol < 9 && newRow > 0 && newRow < 9 && !player.asciiPieces.contains(board[newRow][newCol])) {
-            if(enemy.asciiPieces.contains(board[newRow][newCol]) && isMoving) {
-                Piece.erase(board, newCol, newRow);
-                for(Piece el : enemy.pieces) {
-                    if(el.getPos()[0] == newCol && el.getPos()[1] == newRow) {
-                        enemy.pieces.remove(el);
-                        break;
-                    }
-                }
-            }
-            return (newCol == this.col + 1 && newRow == this.row + 2) ||
+          boolean isValidMove = (newCol == this.col + 1 && newRow == this.row + 2) ||
                     (newCol == this.col - 1 && newRow == this.row + 2) ||
                     (newCol == this.col + 2 && newRow == this.row + 1) ||
                     (newCol == this.col + 2 && newRow == this.row - 1) ||
@@ -49,6 +40,16 @@ public final class Knight extends Piece {
                     (newCol == this.col - 2 && newRow == this.row - 1) ||
                     (newCol == this.col + 1 && newRow == this.row - 2) ||
                     (newCol == this.col - 1 && newRow == this.row - 2);
+					if(enemy.asciiPieces.contains(board[newRow][newCol]) && isMoving && isValidMove) {
+                for(Piece el : enemy.pieces) {
+                    if(el.getPos()[0] == newCol && el.getPos()[1] == newRow) {
+												Piece.erase(board, newCol, newRow);
+                        enemy.pieces.remove(el);
+                        break;
+                    }
+                }
+            }
+            return isValidMove;
         }
 
         return false;
